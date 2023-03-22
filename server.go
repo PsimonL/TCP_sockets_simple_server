@@ -18,15 +18,25 @@ var serverConfig = ServerConfig{
 }
 
 func main() {
-	fmt.Println("Server start")
+	fmt.Println("Running server...")
 	// TCP listener that can accept incoming connections on port 8080:
-	ln, err := net.Listen(serverConfig.Type, serverConfig.Host+":"+serverConfig.Port) // net.Dial() <- remote
+	server, err := net.Listen(serverConfig.Type, serverConfig.Host+":"+serverConfig.Port) // net.Dial() <- remote
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error listening:", err.Error())
 		return
 	}
-	defer ln.Close()
-	fmt.Println("Server end")
+	defer server.Close() // ensures that the network listener is properly closed when the function exits, even if an error occurred
+	// Accept connections in a loop
+	for {
+		conn, err := server.Accept()
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+		// Handle each connection in a new goroutine
+		go handleConnection(conn)
+	}
+	fmt.Println("Server Stopped.")
 }
 
 func handleConnection() {
