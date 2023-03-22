@@ -3,6 +3,6 @@ package main
 import "fmt"
 
 func main() {
-	fmt.Println("Client")
+	fmt.Println("Client start")
 
 }
