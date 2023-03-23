@@ -17,7 +17,7 @@ type ServerConfig struct {
 var serverConfig ServerConfig
 
 func init() {
-	file, err := os.Open("input.txt")
+	file, err := os.Open("connection_params.txt")
 	if err != nil {
 		panic(err)
 	}
