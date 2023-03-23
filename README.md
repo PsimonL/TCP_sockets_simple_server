@@ -13,7 +13,7 @@ Go routines and concurrency which are more suitable than Runnable interface from
 Go routines are based on Fork-Join Model.
 
 
-Resources and bibliography:
+Resources and bibliography:  
 https://pkg.go.dev/net  
 https://go.dev/tour/concurrency/1  
 https://go.dev/tour/concurrency/2  

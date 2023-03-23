@@ -26,7 +26,7 @@ func main() {
 		return
 	}
 	defer server.Close() // ensures that the network listener is properly closed when the function exits, even if an error occurred
-	// Accept connections in a loop
+	// Accept connections in a infinite loop
 	for {
 		conn, err := server.Accept()
 		if err != nil {
@@ -39,6 +39,6 @@ func main() {
 	fmt.Println("Server Stopped.")
 }
 
-func handleConnection() {
+func handleConnection(conn net.Conn) {
 
 }
