@@ -1,48 +1,15 @@
 package main
 
 import (
-	"bufio"
+	connector "awesomeProject1/connection_stuff"
 	"fmt"
 	"net"
-	"os"
-	"strings"
 )
-
-type ServerConfig struct {
-	Host string
-	Port string
-	Type string
-}
-
-var serverConfig ServerConfig
-
-func init() {
-	file, err := os.Open("connection_params.txt")
-	if err != nil {
-		panic(err.Error())
-	}
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
-	var myList []string
-	for scanner.Scan() {
-		line := scanner.Text()
-		words := strings.Split(line, ";")
-		for _, word := range words {
-			myList = append(myList, word)
-		}
-	}
-	if err := scanner.Err(); err != nil {
-		panic(err.Error())
-	}
-	serverConfig.Host = myList[0]
-	serverConfig.Port = myList[1]
-	serverConfig.Type = myList[2]
-}
 
 func main() {
 	fmt.Println("Running server...")
 	// TCP listener on port 8080
-	server, err := net.Listen(serverConfig.Type, serverConfig.Host+":"+serverConfig.Port) // net.Dial() <- remote
+	server, err := net.Listen(connector.ServConfObj.Type, connector.ServConfObj.Host+":"+connector.ServConfObj.Port) // net.Dial() <- remote
 	fmt.Println("FLAG1")
 	// If error exists exit main
 	if err != nil {
