@@ -19,7 +19,7 @@ var serverConfig ServerConfig
 func init() {
 	file, err := os.Open("connection_params.txt")
 	if err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
@@ -32,7 +32,7 @@ func init() {
 		}
 	}
 	if err := scanner.Err(); err != nil {
-		panic(err)
+		panic(err.Error())
 	}
 	serverConfig.Host = myList[0]
 	serverConfig.Port = myList[1]
@@ -46,7 +46,7 @@ func main() {
 	fmt.Println("FLAG1")
 	// If error exists exit main
 	if err != nil {
-		fmt.Println("Error listening:", err.Error())
+		panic(err.Error())
 		return
 	}
 	// Ensures that listener is properly closed - always after main execution (even if an error occurred)
@@ -58,7 +58,7 @@ func main() {
 		// net.Conn object - connection for request from client
 		conn, err := server.Accept()
 		if err != nil {
-			fmt.Println(err)
+			panic(err.Error())
 			continue
 		}
 		// Ensures that we can handle couple connections at one time (go concurrency - small number of operating system threads)
@@ -74,14 +74,14 @@ func handleConnection(conn net.Conn) {
 	// Read the incoming connection into the buffer - ignore number of bytes read
 	_, err := conn.Read(buf)
 	if err != nil {
-		fmt.Println("Error reading:", err.Error())
+		panic(err.Error())
 		return
 	}
 	// Send response to client - ignore number of bytes written
 	response := "Hello, client!"
 	_, err = conn.Write([]byte(response))
 	if err != nil {
-		fmt.Println("Error writing:", err.Error())
+		panic(err.Error())
 		return
 	}
 }
