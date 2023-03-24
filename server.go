@@ -67,7 +67,7 @@ func main() {
 	fmt.Println("Server Stopped.")
 }
 
-// responsible for single connection
+// Responsible for single connection
 func handleConnection(conn net.Conn) {
 	// Make a buffer to hold incoming data - used to store the incoming data until the server has received the complete request
 	buf := make([]byte, 1024)
