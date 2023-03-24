@@ -10,7 +10,6 @@ func main() {
 	fmt.Println("Running server...")
 	// TCP listener on port 8080
 	server, err := net.Listen(connector.ServConfObj.Type, connector.ServConfObj.Host+":"+connector.ServConfObj.Port) // net.Dial() <- remote
-	fmt.Println("FLAG1")
 	// If error exists exit main
 	if err != nil {
 		panic(err.Error())
@@ -18,7 +17,7 @@ func main() {
 	}
 	// Ensures that listener is properly closed - always after main execution (even if an error occurred)
 	defer server.Close()
-	fmt.Println("Server listening on port 8080")
+	fmt.Printf("Server listening on port %s", connector.ServConfObj.Port)
 
 	// Accept connections in loop
 	for {

@@ -3,6 +3,7 @@ package connection_stuff
 import (
 	"bufio"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -15,11 +16,19 @@ type ServerConfig struct {
 var ServConfObj ServerConfig
 
 func init() {
-	file, err := os.Open("connection_params.txt")
+	dir, err := os.Getwd()
+	if err != nil {
+		panic(err.Error())
+		return
+	}
+
+	filePath := filepath.Join(dir, "../connection_stuff")
+	file, err := os.Open(filePath + "/text.txt")
 	if err != nil {
 		panic(err.Error())
 	}
 	defer file.Close()
+
 	scanner := bufio.NewScanner(file)
 	var myList []string
 	for scanner.Scan() {
