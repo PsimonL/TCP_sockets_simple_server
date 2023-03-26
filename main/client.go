@@ -1,8 +1,9 @@
 package main
 
 import (
-	connector "awesomeProject1/connection_stuff"
+	connector "awesomeProject1/conn_stuff"
 	"fmt"
+	"io/ioutil"
 	"net"
 )
 
@@ -15,4 +16,14 @@ func main() {
 		return
 	}
 	defer conn.Close()
+
+	// Read the response body
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+		return
+	}
+
+	// Print the response body
+	fmt.Println(string(body))
 }
