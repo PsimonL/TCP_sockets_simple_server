@@ -1,7 +1,7 @@
 package main
 
 import (
-	connector "awesomeProject1/conn_stuff"
+	connector "awesomeProject1/conn_manager"
 	"bufio"
 	"fmt"
 	//"io/ioutil"

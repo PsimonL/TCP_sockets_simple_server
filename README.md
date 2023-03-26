@@ -18,5 +18,6 @@ https://pkg.go.dev/net
 https://go.dev/tour/concurrency/1  
 https://go.dev/tour/concurrency/2  
 https://go.dev/tour/concurrency/3  
-https://www.youtube.com/watch?v=qyM8Pi1KiiM
-https://golangr.com/socket-server/
+https://www.youtube.com/watch?v=qyM8Pi1KiiM  
+https://golangr.com/socket-server/  
+https://www.developer.com/languages/intro-socket-programming-go/

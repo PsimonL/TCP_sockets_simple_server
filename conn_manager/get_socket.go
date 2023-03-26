@@ -1,4 +1,4 @@
-package conn_stuff
+package conn_manager
 
 import (
 	"bufio"
@@ -22,7 +22,7 @@ func init() {
 		return
 	}
 
-	filePath := filepath.Join(dir, "../conn_stuff")
+	filePath := filepath.Join(dir, "../conn_manager")
 	file, err := os.Open(filePath + "/socket_details.txt")
 	if err != nil {
 		panic(err.Error())
