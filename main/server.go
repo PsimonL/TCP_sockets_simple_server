@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"fmt"
 	"net"
+	"os"
 )
 
 func main() {
@@ -18,8 +19,9 @@ func main() {
 	}
 	// Ensures that listener is properly closed - always after main execution (even if an error occurred)
 	defer server.Close()
+	fmt.Println("Server listening on: " + connector.ServConfObj.Port)
 
-	// Accept connections in loop
+	// Accept connections in loop (separate goroutine for certain connection)
 	for {
 		// net.Conn object - connection for request from client
 		conn, err := server.Accept()
@@ -37,7 +39,20 @@ func main() {
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
 	// start a loop to send messages to client
-	go send_message(conn)
+	go func() {
+		scanner := bufio.NewScanner(os.Stdin)
+		for scanner.Scan() {
+			message := scanner.Text()
+			if message == "q!" {
+				conn.Close()
+			}
+			conn.Write([]byte(message + "\n"))
+		}
+		if err := scanner.Err(); err != nil {
+			panic(err.Error())
+			return
+		}
+	}()
 	// read incoming
 	//go receive_message(conn)
 	scanner := bufio.NewScanner(conn)
@@ -51,19 +66,4 @@ func handleConnection(conn net.Conn) {
 		return
 	}
 
-}
-
-func send_message(conn net.Conn) {
-	scanner := bufio.NewScanner(conn)
-	for scanner.Scan() {
-		message := scanner.Text()
-		if message == "q!" {
-			conn.Close()
-		}
-		conn.Write([]byte(message + "\n"))
-	}
-	if err := scanner.Err(); err != nil {
-		panic(err.Error())
-		return
-	}
 }

@@ -16,18 +16,32 @@ func main() {
 		panic(err.Error())
 		return
 	}
-	fmt.Println("Client connected on port " + connector.ServConfObj.Port + ":\n")
 	defer conn.Close()
-	go
+	fmt.Println("Client connected on port:", conn.RemoteAddr())
+
+	go func() {
+		scanner := bufio.NewScanner(os.Stdin)
+		for scanner.Scan() {
+			message := scanner.Text()
+			if message == "q!" {
+				conn.Close()
+			}
+			conn.Write([]byte(message + "\n"))
+		}
+		if err := scanner.Err(); err != nil {
+			panic(err.Error())
+			return
+		}
+	}()
 	// start a loop to read input from the user and send messages to the server
-	scanner := bufio.NewScanner(os.Stdin)
+	scanner := bufio.NewScanner(conn)
 	for scanner.Scan() {
 		message := scanner.Text()
-		fmt.Fprintln(conn, message)
+		fmt.Println("Received message from server:", message)
+		fmt.Print("Enter message to send to client: ")
 	}
 	if err := scanner.Err(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		panic(err.Error())
+		return
 	}
 }
-
