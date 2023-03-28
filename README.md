@@ -37,7 +37,7 @@ The server responds with a segment confirming receipt with the ACK flag.
 Then, server sends a segment with the FIN flag, and client responds with a confirming segment with the ACK flag. 
 This closes the TCP session/connection between hosts.  
 
-**Details how code works is described using comments in "server.go" and "client.go"**
+**Details how code works is described using comments in "server.go" and "client.go".**
 
 How to run:
 ```
