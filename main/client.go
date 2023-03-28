@@ -2,11 +2,9 @@ package main
 
 import (
 	connector "awesomeProject1/conn_manager"
-	"bufio"
 	"fmt"
 	//"io/ioutil"
 	"net"
-	"os"
 )
 
 func main() {
@@ -16,32 +14,12 @@ func main() {
 		panic(err.Error())
 		return
 	}
+	// Close connection after function ends
 	defer conn.Close()
 	fmt.Println("Client connected on port:", conn.RemoteAddr())
 
-	go func() {
-		scanner := bufio.NewScanner(os.Stdin)
-		for scanner.Scan() {
-			message := scanner.Text()
-			if message == "q!" {
-				conn.Close()
-			}
-			conn.Write([]byte(message + "\n"))
-		}
-		if err := scanner.Err(); err != nil {
-			panic(err.Error())
-			return
-		}
-	}()
-	// start a loop to read input from the user and send messages to the server
-	scanner := bufio.NewScanner(conn)
-	for scanner.Scan() {
-		message := scanner.Text()
-		fmt.Println("Received message from server:", message)
-		fmt.Print("Enter message to send to client: ")
-	}
-	if err := scanner.Err(); err != nil {
-		panic(err.Error())
-		return
-	}
+	go connector.HandleConnection(conn)
+
+	// Program will wait until any of cases can proceed - cases do not exist so program will not proceed, won't finish up (making kind of "infinite loop" with that operation as I understand)
+	select {}
 }

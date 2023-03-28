@@ -14,6 +14,9 @@ Go routines are based on Fork-Join Model.
 
 
 Resources and bibliography:  
+https://go.dev/tour/concurrency/5  
+https://ai.ia.agh.edu.pl/pl:dydaktyka:unix:lab_prog_siec
+https://home.agh.edu.pl/~balis/dydakt/sr/lab/gniazda2009.pdf
 https://pkg.go.dev/net  
 https://go.dev/tour/concurrency/1  
 https://go.dev/tour/concurrency/2  

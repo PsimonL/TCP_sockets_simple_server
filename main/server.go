@@ -2,10 +2,8 @@ package main
 
 import (
 	connector "awesomeProject1/conn_manager"
-	"bufio"
 	"fmt"
 	"net"
-	"os"
 )
 
 func main() {
@@ -18,6 +16,7 @@ func main() {
 		return
 	}
 	// Ensures that listener is properly closed - always after main execution (even if an error occurred)
+	// Close connection after function ends
 	defer server.Close()
 	fmt.Println("Server listening on: " + connector.ServConfObj.Port)
 
@@ -30,40 +29,7 @@ func main() {
 			return
 		}
 		fmt.Println("Client connected:", conn.RemoteAddr())
-		// Ensures that we can handle couple connections at one time (go concurrency - small number of operating system threads)
-		go handleConnection(conn)
+		// Ensures that we can handle couple connections at one time - separate thread for connection
+		go connector.HandleConnection(conn)
 	}
-}
-
-// Responsible for single connection
-func handleConnection(conn net.Conn) {
-	defer conn.Close()
-	// start a loop to send messages to client
-	go func() {
-		scanner := bufio.NewScanner(os.Stdin)
-		for scanner.Scan() {
-			message := scanner.Text()
-			if message == "q!" {
-				conn.Close()
-			}
-			conn.Write([]byte(message + "\n"))
-		}
-		if err := scanner.Err(); err != nil {
-			panic(err.Error())
-			return
-		}
-	}()
-	// read incoming
-	//go receive_message(conn)
-	scanner := bufio.NewScanner(conn)
-	for scanner.Scan() {
-		message := scanner.Text()
-		fmt.Println("Received message from client:", message)
-		fmt.Println("Enter message to send to client: ")
-	}
-	if err := scanner.Err(); err != nil {
-		panic(err.Error())
-		return
-	}
-
 }
