@@ -2,9 +2,10 @@ package main
 
 import (
 	connector "awesomeProject1/conn_manager"
+	"bufio"
 	"fmt"
-	//"io/ioutil"
 	"net"
+	"os"
 )
 
 func main() {
@@ -15,8 +16,30 @@ func main() {
 		return
 	}
 	// Close connection after function ends
-	defer conn.Close()
+	defer func(conn net.Conn) {
+		err := conn.Close()
+		if err != nil {
+
+		}
+	}(conn)
 	fmt.Println("Client connected on port:", conn.RemoteAddr())
+
+	// Authenticate user
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Print("Enter username: ")
+	scanner.Scan()
+	username := scanner.Text()
+
+	fmt.Print("Enter password: ")
+	scanner.Scan()
+	password := scanner.Text()
+
+	if username == connector.ServConfObj.Credentials.Username && password == connector.ServConfObj.Credentials.Password {
+		fmt.Println("Authentication successful. Permission granted. Connecting...")
+	} else {
+		fmt.Println("Authentication failed. Permission denied. Exiting...")
+		return
+	}
 
 	go connector.HandleConnection(conn)
 

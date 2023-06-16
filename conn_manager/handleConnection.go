@@ -5,69 +5,52 @@ import (
 	"fmt"
 	"net"
 	"os"
-	"strings"
 )
 
 // Handles connection for server and client as well.
 // Responsible for single connection
 func HandleConnection(conn net.Conn) {
 	// Close connection after function ends
-	defer conn.Close()
+	defer func(conn net.Conn) {
+		err := conn.Close()
+		if err != nil {
 
-	// Perform authentication
-	if !authenticate(conn) {
-		return
-	}
+		}
+	}(conn)
 
 	// Start a loop to send messages to server/client - new thread
 	// This function will be executed in parallel with the main function, handleConnection
 	go func() {
 		// Read input from the standard input (os.Stdin), waits for user input
-		scanner1 := bufio.NewScanner(os.Stdin)
+		scanner := bufio.NewScanner(os.Stdin)
 		// Until false, until data flows out of server/client
-		for scanner1.Scan() {
+		for scanner.Scan() {
 			// Extract the text message
-			message := scanner1.Text()
+			message := scanner.Text()
 			if message == "q!" {
-				conn.Close()
+				err := conn.Close()
+				if err != nil {
+					return
+				}
 			}
 			// Send message to client/server
 			conn.Write([]byte(message + "\n"))
 		}
-		if err := scanner1.Err(); err != nil {
+		if err := scanner.Err(); err != nil {
 			panic(err.Error())
 			return
 		}
 	}()
-
 	// Read incoming messages from client/server
-	scanner2 := bufio.NewScanner(conn) // Reuse the scanner variable
+	scanner := bufio.NewScanner(conn)
 	// Loop until false, until data flows to server/client
-	for scanner2.Scan() {
-		message := scanner2.Text()
+	for scanner.Scan() {
+		message := scanner.Text()
 		fmt.Println("Received message from client:", message)
 		fmt.Println("Enter message to send to client: ")
 	}
-	if err := scanner2.Err(); err != nil {
+	if err := scanner.Err(); err != nil {
 		panic(err.Error())
 		return
 	}
-}
-
-func authenticate(conn net.Conn) bool {
-	conn.Write([]byte("Enter username: "))
-	username, _ := bufio.NewReader(conn).ReadString('\n')
-	conn.Write([]byte("Enter password: "))
-	password, _ := bufio.NewReader(conn).ReadString('\n')
-
-	username = strings.TrimSpace(username)
-	password = strings.TrimSpace(password)
-
-	if username != ServConfObj.Credentials.Username || password != ServConfObj.Credentials.Password {
-		conn.Write([]byte("Invalid username or password. Permission denied, connection closed.\n"))
-		return false
-	}
-
-	conn.Write([]byte("Authentication successful. Connected successfully.\n"))
-	return true
 }
