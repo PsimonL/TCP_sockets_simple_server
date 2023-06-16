@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strings"
 )
 
 // Handles connection for server and client as well.
@@ -54,5 +55,19 @@ func HandleConnection(conn net.Conn) {
 }
 
 func authenticate(conn net.Conn) bool {
+	conn.Write([]byte("Enter username: "))
+	username, _ := bufio.NewReader(conn).ReadString('\n')
+	conn.Write([]byte("Enter password: "))
+	password, _ := bufio.NewReader(conn).ReadString('\n')
 
+	username = strings.TrimSpace(username)
+	password = strings.TrimSpace(password)
+
+	if username != ServConfObj.Credentials.Username || password != ServConfObj.Credentials.Password {
+		conn.Write([]byte("Invalid username or password. Permission denied, connection closed.\n"))
+		return false
+	}
+
+	conn.Write([]byte("Authentication successful. Connected successfully.\n"))
+	return true
 }
