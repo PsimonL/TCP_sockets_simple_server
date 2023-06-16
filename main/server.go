@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	fmt.Println("Running server...")
+	fmt.Println("Starting server...")
 	// TCP listener on port 8080
 	server, err := net.Listen(connector.ServConfObj.Type, connector.ServConfObj.Host+":"+connector.ServConfObj.Port) // net.Dial() <- remote
 	// If error exists exit main
