@@ -12,36 +12,47 @@ import (
 func HandleConnection(conn net.Conn) {
 	// Close connection after function ends
 	defer conn.Close()
+
+	// Perform authentication
+	if !authenticate(conn) {
+		return
+	}
+
 	// Start a loop to send messages to server/client - new thread
 	// This function will be executed in parallel with the main function, handleConnection
 	go func() {
 		// Read input from the standard input (os.Stdin), waits for user input
-		scanner := bufio.NewScanner(os.Stdin)
+		scanner1 := bufio.NewScanner(os.Stdin)
 		// Until false, until data flows out of server/client
-		for scanner.Scan() {
+		for scanner1.Scan() {
 			// Extract the text message
-			message := scanner.Text()
+			message := scanner1.Text()
 			if message == "q!" {
 				conn.Close()
 			}
 			// Send message to client/server
 			conn.Write([]byte(message + "\n"))
 		}
-		if err := scanner.Err(); err != nil {
+		if err := scanner1.Err(); err != nil {
 			panic(err.Error())
 			return
 		}
 	}()
+
 	// Read incoming messages from client/server
-	scanner := bufio.NewScanner(conn)
+	scanner2 := bufio.NewScanner(conn) // Reuse the scanner variable
 	// Loop until false, until data flows to server/client
-	for scanner.Scan() {
-		message := scanner.Text()
+	for scanner2.Scan() {
+		message := scanner2.Text()
 		fmt.Println("Received message from client:", message)
 		fmt.Println("Enter message to send to client: ")
 	}
-	if err := scanner.Err(); err != nil {
+	if err := scanner2.Err(); err != nil {
 		panic(err.Error())
 		return
 	}
+}
+
+func authenticate(conn net.Conn) bool {
+
 }
