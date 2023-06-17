@@ -47,6 +47,26 @@ go run server.go
 # 2nd
 go run client.go
 ```
+5. Authentication:  
+
+6. SSL/TLS:  
+
+Generating private key:
+```
+openssl genpkey -algorithm RSA -out private-key.key
+```
+Generating certificate:
+```
+openssl req -new -key private-key.key -out certificate.csr
+```
+Sign up certificate:
+```
+openssl x509 -req -in certificate.csr -signkey private-key.key -out certificate.pem
+```
+
+For a testing or development environment, it is possible to self-sign a certificate. However, for a production environment, 
+it is recommended to use trusted authorities and organizations (**Certificate Authorities - CAs**). 
+A good choice is to use the services of 'Let's Encrypt' (https://letsencrypt.org/), which is completely free.  
 
 
 Golang project instead of Java. 
