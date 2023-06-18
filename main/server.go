@@ -11,7 +11,7 @@ func main() {
 	fmt.Println("Starting server...")
 
 	// Load certificate and private key
-	cert, err := tls.LoadX509KeyPair("path/to/certificate.pem", "path/to/private_key.pem")
+	cert, err := tls.LoadX509KeyPair("<<<path_to_certificate.pem>>>", "<<<path_to_private-key.key>>>")
 	if err != nil {
 		panic(err.Error())
 	}
