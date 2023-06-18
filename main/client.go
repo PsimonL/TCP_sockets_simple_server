@@ -3,14 +3,20 @@ package main
 import (
 	connector "awesomeProject1/conn_manager"
 	"bufio"
+	"crypto/tls"
 	"fmt"
 	"net"
 	"os"
 )
 
 func main() {
+	// TLS config
+	tlsConfig := &tls.Config{
+		InsecureSkipVerify: true, // MUST HAVE!!! -> if using self-signed certificate
+	}
+
 	// Connect to the server
-	conn, err := net.Dial(connector.ServConfObj.Type, connector.ServConfObj.Host+":"+connector.ServConfObj.Port)
+	conn, err := tls.Dial(connector.ServConfObj.Type, connector.ServConfObj.Host+":"+connector.ServConfObj.Port, tlsConfig)
 	if err != nil {
 		panic(err.Error())
 		return
