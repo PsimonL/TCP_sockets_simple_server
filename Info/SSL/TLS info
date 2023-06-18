@@ -1,0 +1,3 @@
+Certificate generated based on OpenSSL, signed by myself, purely for dev and test purposes.
+I got .pem, .csr and .key files from that procedure.
+I have not included those files into this project (containing private key).
