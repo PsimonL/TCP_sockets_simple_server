@@ -41,9 +41,9 @@ func main() {
 	password := scanner.Text()
 
 	if username == connector.ServConfObj.Credentials.Username && password == connector.ServConfObj.Credentials.Password {
-		fmt.Println("Authentication successful. Permission granted. Connecting...")
+		fmt.Println("Authentication successful. Permission granted.")
 	} else {
-		fmt.Println("Authentication failed. Permission denied. Exiting...")
+		fmt.Println("Authentication failed. Permission denied.")
 		return
 	}
 

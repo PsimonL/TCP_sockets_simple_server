@@ -46,8 +46,8 @@ func HandleConnection(conn net.Conn) {
 	// Loop until false, until data flows to server/client
 	for scanner.Scan() {
 		message := scanner.Text()
-		fmt.Println("Received message from client:", message)
-		fmt.Println("Enter message to send to client: ")
+		fmt.Println("Received message:", message)
+		fmt.Println("Send message: ")
 	}
 	if err := scanner.Err(); err != nil {
 		panic(err.Error())
