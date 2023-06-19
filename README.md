@@ -120,3 +120,8 @@ https://www.developer.com/languages/intro-socket-programming-go/
 https://linuxhint.com/golang-tcp-server/  
 https://go.dev/tour/concurrency/5  
 https://www.youtube.com/watch?v=1BfCnjr_Vjg
+https://www.ibm.com/docs/de/zos/2.4.0?topic=protocols-tls-ssl
+https://www.ibm.com/docs/en/zos-connect/zosconnect/3.0?topic=connect-transport-layer-security-tls
+https://www.ibm.com/support/pages/configuring-your-ibm-i-system-secure-sockets-layer-ssltransport-layer-security-tls-protocols-and-cipher-suites
+https://pkg.go.dev/crypto/tls
+https://gist.github.com/denji/12b3a568f092ab951456
